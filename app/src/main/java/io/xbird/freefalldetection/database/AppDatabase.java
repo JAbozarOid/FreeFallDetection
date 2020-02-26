@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {FallEntity.class},version = 1)
+@Database(entities = {FallEntity.class},version = 1,exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -17,17 +17,17 @@ public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance;
 
     // that is not allowed that two class refer to database at the same time
-    private static final Object LOCK = new Object();
+//    private static final Object LOCK = new Object();
 
     // this method is abstract because this method never call directly
     public abstract FallDAO fallDAO();
 
     public static AppDatabase getInstance(Context context) {
         if (instance == null){
-            synchronized (LOCK){
+//            synchronized (LOCK){
                 if (instance == null){
-                    instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,DATABASE_NAME).build();
-                }
+                    instance = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class,DATABASE_NAME).allowMainThreadQueries().build();
+//                }
             }
         }
         return instance;

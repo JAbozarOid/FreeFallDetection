@@ -20,6 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import io.xbird.freefalldetection.R;
+import io.xbird.freefalldetection.database.AppRepository;
+import io.xbird.freefalldetection.database.FallEntity;
 
 
 public class FallDetectionService extends Service implements SensorEventListener {
@@ -33,6 +35,8 @@ public class FallDetectionService extends Service implements SensorEventListener
     public static boolean isCurrentStateFall = false;
     public static long startTime = 0;
     public static long stopTime = 0;
+
+    private AppRepository appRepository = AppRepository.getInstance(this);
 
     @Nullable
     @Override
@@ -77,12 +81,19 @@ public class FallDetectionService extends Service implements SensorEventListener
             Log.d(TAG, "ABOUZAR : FALL END");
             stopTime = sensorEvent.timestamp;
             Log.d(TAG, "ABOUZAR : fall time" + " " + ((stopTime - startTime) / 1000000) + " milliSeconds");
+            String durationTime = ((stopTime - startTime) / 1000000) + " milliSeconds";
             sendLocalPushNotif();
+            saveInDatabase(durationTime);
 
         }
 
         isLastStateFall = isCurrentStateFall;
 
+    }
+
+    private void saveInDatabase(String durationTime) {
+        appRepository.insertNote(new FallEntity(durationTime));
+        Log.d(TAG, "onSensorChanged: fallEntity" + new FallEntity().getDuration());
     }
 
     @Override

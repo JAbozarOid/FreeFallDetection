@@ -1,6 +1,5 @@
 package io.xbird.freefalldetection.database;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -20,8 +19,8 @@ public interface FallDAO {
 
 
     // this query return newest falls that sorted by dates
-    @Query("SELECT * FROM falls ORDER BY date DESC")
-    LiveData<List<FallEntity>> getAll();
+    @Query("SELECT * FROM falls")
+    List<FallEntity> getAll();
 
 
 }

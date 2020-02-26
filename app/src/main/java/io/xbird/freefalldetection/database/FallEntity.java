@@ -11,24 +11,20 @@ public class FallEntity {
 
     @PrimaryKey(autoGenerate = true) // this means id can generate automatically
     private int id;
+    @Ignore
     private Date date; // sqlite can not store pure java so Date must convert to long integer -> please refer to DateConverter class
     private String duration;
 
-    @Ignore
-    // this annotation means Room can have only one constructor so this annotation ignore this and other constructor
     public FallEntity() {
     }
 
-    public FallEntity(int id, Date date, String durationTime) {
+    public FallEntity(int id,String durationTime) {
         this.id = id;
-        this.date = date;
         this.duration = durationTime;
     }
 
-    @Ignore
-    public FallEntity(Date date, String durationTime) {
-        this.date = date;
-        this.duration = durationTime;
+    public FallEntity(String duration) {
+        this.duration = duration;
     }
 
     public int getId() {
