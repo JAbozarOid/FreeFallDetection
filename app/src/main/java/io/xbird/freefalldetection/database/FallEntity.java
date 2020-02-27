@@ -9,15 +9,17 @@ import java.util.Date;
 @Entity(tableName = "falls")
 public class FallEntity {
 
-    @PrimaryKey(autoGenerate = true) // this means id can generate automatically
+    @PrimaryKey(autoGenerate = true)
     private int id;
     @Ignore
     private Date date; // sqlite can not store pure java so Date must convert to long integer -> please refer to DateConverter class
     private String duration;
 
+    @Ignore
     public FallEntity() {
     }
 
+    @Ignore
     public FallEntity(int id,String durationTime) {
         this.id = id;
         this.duration = durationTime;

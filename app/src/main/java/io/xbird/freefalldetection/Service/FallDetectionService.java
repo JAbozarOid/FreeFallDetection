@@ -15,10 +15,8 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
 import io.xbird.freefalldetection.R;
 import io.xbird.freefalldetection.database.AppRepository;
 import io.xbird.freefalldetection.database.FallEntity;
@@ -37,6 +35,8 @@ public class FallDetectionService extends Service implements SensorEventListener
     public static long stopTime = 0;
 
     private AppRepository appRepository = AppRepository.getInstance(this);
+    //private MainViewModel mainViewModel;
+
 
     @Nullable
     @Override
@@ -56,6 +56,7 @@ public class FallDetectionService extends Service implements SensorEventListener
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
         if (mSensorManager != null) {
             accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
@@ -92,8 +93,8 @@ public class FallDetectionService extends Service implements SensorEventListener
     }
 
     private void saveInDatabase(String durationTime) {
-        appRepository.insertNote(new FallEntity(durationTime));
-        Log.d(TAG, "onSensorChanged: fallEntity" + new FallEntity().getDuration());
+        appRepository.insertFall(new FallEntity(durationTime));
+        //mainViewModel.saveNote(durationTime);
     }
 
     @Override
@@ -149,5 +150,6 @@ public class FallDetectionService extends Service implements SensorEventListener
                 .build();
         startForeground(2, notification);
     }
+
 
 }
